@@ -1,0 +1,69 @@
+{
+    "name" : "SCHEDULER",
+    "description" : "A module for log to stdout info.",
+    "submodules" : [
+        {
+            "tag" : "SCHEDULER_START",
+            "script" : "scheduler.wwm.js",
+            "template" : {
+                "name" : "SCHEDULER",
+                "tag" : "SCHEDULER_START",
+                "type" : "PERIODIC",
+                "status" : 0,
+                "outputConnectors" : [
+                    {
+                        "x" : 11,
+                        "y" : 11
+                    }
+                ],
+                "outputParams" : [
+                    {
+                        "nickname": "Last Activation",
+                        "name" : "_LAST_ACTIVATION",
+                        "type" : "DATE",
+                        "value":"",
+                        "optional" : false
+                    }
+                ],
+                "properties" : [
+                    {
+                        "nickname": "Week Days",
+                        "name" : "_DAYS",
+                        "type" : "DAYS_PICKER",
+                        "value":"",
+                        "optional" : false
+                    },
+                    {
+                        "nickname": "Start Hour",
+                        "name" : "_START_HOUR",
+                        "type" : "TIME",
+                        "value":"00:00",
+                        "optional" : false
+                    },
+                    {
+                        "nickname": "End Hour",
+                        "name" : "_END_HOUR",
+                        "type" : "TIME",
+                        "value":"00:00",
+                        "optional" : false
+                    },
+                    {
+                        "name" : "_SHOW",
+                        "type" : "ARRAY",
+                        "value":"_DAYS,_START_HOUR,_END_HOUR,_LAST_ACTIVATION",
+                        "optional" : false
+                    },
+                    {
+                        "nickname": "Last Activation",
+                        "name" : "_LAST_ACTIVATION",
+                        "type" : "DATE",
+                        "value":"1994/08/17",
+                        "optional" : false
+                    }
+                ]
+            },
+            "requires" : [],
+            "libraries" : ["console"]
+        }
+    ]
+}

@@ -1,0 +1,353 @@
+{
+    "name": "ARACHNI",
+    "description": "Use ARACHNI for scanning",
+    "submodules": [
+        {
+            "tag": "ARACHNI_REST",
+            "script": "ARACHNI_REST.wwm.js",
+            "template": {
+                "name": "ARACHNI REST",
+                "tag": "ARACHNI_REST",
+                "type": "ANY",
+                "status": 0,
+                "inputConnectors": [
+                    {
+                        "x": 11,
+                        "y": 11
+                    }
+                ],
+                "inputParams": [],
+                "outputConnectors": [
+                    {
+                        "x": 11,
+                        "y": 11
+                    }
+                ],
+                "outputParams": [],
+                "errorConnectors": [
+                    {
+                        "x": 11,
+                        "y": 11
+                    }
+                ],
+                "errorParams": [],
+                "properties": [
+                    {
+                        "nickname": "Status",
+                        "name": "_STATUS",
+                        "type": "STRING",
+                        "value": "",
+                        "optional": true
+                    },
+                    {
+                        "nickname": "Runtime",
+                        "name": "_RUNTIME",
+                        "type": "NUMBER",
+                        "value": 0,
+                        "optional": true
+                    },
+                    {
+                        "nickname": "Nº Req/Res",
+                        "name": "_REQ_RES",
+                        "type": "STRING",
+                        "value": "0/0",
+                        "optional": true
+                    },
+                    {
+                        "nickname": "Scan tests",
+                        "name": "_CHECKS",
+                        "type": "SCAN_PROFILE",
+                        "value": [
+                            "*"
+                        ],
+                        "optional": true
+                    },
+                    {
+                        "nickname": "URL",
+                        "name": "_SCAN_URL",
+                        "type": "URL",
+                        "value": "localhost",
+                        "optional": false
+                    },
+                    {
+                        "nickname": "Show Parameters",
+                        "name": "_SHOW",
+                        "type": "ARRAY",
+                        "value": "_SCAN_URL,_REQ_RES,_RUNTIME,_BUSY,_STATUS",
+                        "optional": false
+                    },
+                    {
+                        "nickname": "Scan Options",
+                        "name": "_SCAN_OPTS",
+                        "type": "JSON",
+                        "value": {
+                            "scope": {
+                                "auto_redundant_paths": true,
+                                "directory_depth_limit": 10,
+                                "dom_depth_limit": 10,
+                                "dom_event_limit": 10,
+                                "exclude_binaries": true,
+                                "exclude_content_patterns": [],
+                                "exclude_file_extensions": [],
+                                "exclude_path_patterns": [],
+                                "extend_paths": [],
+                                "https_only": false,
+                                "include_path_patterns": [],
+                                "include_subdomains": true,
+                                "page_limit": 10,
+                                "redundant_path_patterns": {},
+                                "restrict_paths": [],
+                                "url_rewrites": []
+                            },
+                            "audit": {
+                                "cookies": true,
+                                "cookies_extensively": true,
+                                "exclude_vector_patterns": [],
+                                "forms": true,
+                                "headers": true,
+                                "include_vector_patterns": [],
+                                "jsons": true,
+                                "link_templates": [],
+                                "links": true,
+                                "parameter_values": true,
+                                "ui_forms": true,
+                                "ui_inputs": true,
+                                "with_both_http_methods": true,
+                                "with_extra_parameter": true,
+                                "with_raw_payloads": true,
+                                "xmls": true
+                            },
+                            "http": {
+                                "authentication_password": "",
+                                "authentication_type": "auto",
+                                "authentication_username": "",
+                                "cookie_jar_filepath": null,
+                                "cookie_string": "",
+                                "cookies": {},
+                                "proxy": null,
+                                "proxy_host": "",
+                                "proxy_password": "",
+                                "proxy_port": 80,
+                                "proxy_type": "http",
+                                "proxy_username": "",
+                                "request_concurrency": 10,
+                                "request_headers": {},
+                                "request_queue_size": 500,
+                                "request_redirect_limit": 5,
+                                "request_timeout": 50000,
+                                "response_max_size": 100000,
+                                "ssl_ca_directory": "",
+                                "ssl_certificate_filepath": "",
+                                "ssl_certificate_type": "pem",
+                                "ssl_key_password": "",
+                                "ssl_key_type": "pem",
+                                "ssl_verify_host": false,
+                                "ssl_verify_peer": false,
+                                "ssl_version": "TLSv1",
+                                "user_agent": "WebWard/v#1.0"
+                            },
+                            "plugins": {},
+                            "checks": [
+                                "*"
+                            ],
+                            "platforms": [],
+                            "no_fingerprinting": false,
+                            "grid": false,
+                            "grid_mode": null,
+                            "spawns": 0
+                        }
+                    }
+                ]
+            },
+            "requires": [],
+            "libraries": [
+                "console",
+                "arachniREST"
+            ],
+            "injectors" : [
+                "report_store"
+            ]
+        },
+        {
+            "tag": "ARACHNI_RPC",
+            "script": "ARACHNI_RPC.wwm.js",
+            "template": {
+                "name": "ARACHNI",
+                "tag": "ARACHNI_RPC",
+                "type": "ANY",
+                "status": 0,
+                "inputConnectors": [
+                    {
+                        "x": 11,
+                        "y": 11
+                    }
+                ],
+                "inputParams": [],
+                "outputConnectors": [
+                    {
+                        "x": 11,
+                        "y": 11
+                    }
+                ],
+                "outputParams": [],
+                "errorConnectors": [
+                    {
+                        "x": 11,
+                        "y": 11
+                    }
+                ],
+                "errorParams": [],
+                "properties": [
+                    {
+                        "nickname": "Status",
+                        "name": "_STATUS",
+                        "type": "STRING",
+                        "value": "",
+                        "optional": true
+                    },
+                    {
+                        "nickname": "Runtime",
+                        "name": "_RUNTIME",
+                        "type": "NUMBER",
+                        "value": 0,
+                        "optional": true
+                    },
+                    {
+                        "nickname": "Nº Req/Res",
+                        "name": "_REQ_RES",
+                        "type": "STRING",
+                        "value": "0/0",
+                        "optional": true
+                    },
+                    {
+                        "nickname": "Scan tests",
+                        "name": "_CHECKS",
+                        "type": "SCAN_PROFILE",
+                        "value": [
+                            "*"
+                        ],
+                        "optional": true
+                    },
+                    {
+                        "nickname": "URL",
+                        "name": "_SCAN_URL",
+                        "type": "URL",
+                        "value": "localhost",
+                        "optional": false
+                    },
+                    {
+                        "nickname": "Instance",
+                        "name": "_INSTANCE_URL",
+                        "type": "URL",
+                        "value": "",
+                        "optional": false
+                    },
+                    {
+                        "nickname": "Token",
+                        "name": "_INSTANCE_TOKEN",
+                        "type": "STRING",
+                        "value": "",
+                        "optional": false
+                    },
+                    {
+                        "nickname": "Show Parameters",
+                        "name": "_SHOW",
+                        "type": "ARRAY",
+                        "value": "_SCAN_URL,_REQ_RES,_RUNTIME,_BUSY,_STATUS",
+                        "optional": false
+                    },
+                    {
+                        "nickname": "Scan Options",
+                        "name": "_SCAN_OPTS",
+                        "type": "JSON",
+                        "value": {
+                            "scope": {
+                                "auto_redundant_paths": true,
+                                "directory_depth_limit": 10,
+                                "dom_depth_limit": 10,
+                                "dom_event_limit": 10,
+                                "exclude_binaries": true,
+                                "exclude_content_patterns": [],
+                                "exclude_file_extensions": [],
+                                "exclude_path_patterns": [],
+                                "extend_paths": [],
+                                "https_only": true,
+                                "include_path_patterns": [],
+                                "include_subdomains": true,
+                                "page_limit": 10,
+                                "redundant_path_patterns": {},
+                                "restrict_paths": [],
+                                "url_rewrites": []
+                            },
+                            "audit": {
+                                "cookies": true,
+                                "cookies_extensively": true,
+                                "exclude_vector_patterns": [],
+                                "forms": true,
+                                "headers": true,
+                                "include_vector_patterns": [],
+                                "jsons": true,
+                                "link_templates": [],
+                                "links": true,
+                                "parameter_values": true,
+                                "ui_forms": true,
+                                "ui_inputs": true,
+                                "with_both_http_methods": true,
+                                "with_extra_parameter": true,
+                                "with_raw_payloads": true,
+                                "xmls": true
+                            },
+                            "http": {
+                                "authentication_password": "",
+                                "authentication_type": "",
+                                "authentication_username": "",
+                                "cookie_jar_filepath": "",
+                                "cookie_string": "",
+                                "cookies": {},
+                                "proxy": "",
+                                "proxy_host": "",
+                                "proxy_password": "",
+                                "proxy_port": 80,
+                                "proxy_type": "",
+                                "proxy_username": "",
+                                "request_concurrency": 10,
+                                "request_headers": {},
+                                "request_queue_size": 500,
+                                "request_redirect_limit": 5,
+                                "request_timeout": 50000,
+                                "response_max_size": 100000,
+                                "ssl_ca_directory": "",
+                                "ssl_certificate_filepath": "",
+                                "ssl_certificate_type": "",
+                                "ssl_key_password": "",
+                                "ssl_key_type": "",
+                                "ssl_verify_host": false,
+                                "ssl_verify_peer": false,
+                                "ssl_version": "",
+                                "user_agent": "WebWard/v#1.0"
+                            },
+                            "login": {
+                                "check_pattern": "",
+                                "check_url": ""
+                            },
+                            "plugins": {},
+                            "checks": [
+                                "*"
+                            ],
+                            "platforms": [],
+                            "no_fingerprinting": false,
+                            "grid": false,
+                            "grid_mode": null,
+                            "spawns": 0
+                        }
+                    }
+                ]
+            },
+            "requires": [],
+            "libraries": [
+                "console",
+                "arachni"
+            ]
+        }
+    ]
+}

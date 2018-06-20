@@ -1,0 +1,75 @@
+{
+    "name" : "TELEGRAM",
+    "description" : "A module for sending information across Telegram.org Services",
+    "submodules" : [
+        {
+            "tag" : "TELEGRAM_BOT",
+            "script" : "TELEGRAM_BOT.wwm.js",
+            "template" : {
+                "name" : "Telegram Bot",
+                "tag" : "TELEGRAM_BOT",
+                "type" : "REPORT_NOTIFIER",
+                "status" : 0,
+                "inputConnectors" : [
+                    {
+                        "x" : 11,
+                        "y" : 11
+                    }
+                ],
+                "inputParams" : [],
+                "errorConnectors" : [
+                    {
+                        "x" : 11,
+                        "y" : 11
+                    }
+                ],
+                "errorParams" : [],
+                "properties" : [
+                    {
+                        "nickname" : "Chat",
+                        "name" : "_CHAT",
+                        "type" : "STRING",
+                        "value":"",
+                        "optional" : false
+                    },
+                    {
+                        "nickname" : "Chat ID",
+                        "name" : "_CHAT_ID",
+                        "type" : "STRING",
+                        "value":"",
+                        "optional" : false
+                    },
+                    {
+                        "nickname" : "Bot Token",
+                        "name" : "_TOKEN",
+                        "type" : "STRING",
+                        "value":"",
+                        "optional" : false
+                    },
+                    {
+                        "nickname" : "Pre Message",
+                        "name" : "_PRE_MESSAGE",
+                        "type" : "STRING",
+                        "value":"Hi Im a BOT",
+                        "optional" : true
+                    },
+                    {
+                        "nickname" : "Print parameter",
+                        "name" : "_PARAM_PRINT",
+                        "type" : "ARRAY",
+                        "value":"_MESSAGE",
+                        "optional" : true
+                    },
+                    {
+                        "name" : "_SHOW",
+                        "type" : "ARRAY",
+                        "value":"_CHAT,_TOKEN",
+                        "optional" : false
+                    }
+                ]
+            },
+            "requires" : [],
+            "libraries" : ["telegram"]
+        }
+    ]
+}

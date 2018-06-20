@@ -1,0 +1,54 @@
+{
+    "name" : "COUNT",
+    "description" : "A module for count values",
+    "submodules" : [
+        {
+            "tag" : "COUNT_TIMER",
+            "script" : "COUNT_TO.wwm.js",
+            "template" : {
+                "name" : "Timer Counter",
+                "tag" : "COUNT_TO",
+                "type" : "ANY",
+                "status" : 0,
+                "inputConnectors" : [
+                    {
+                        "x" : 11,
+                        "y" : 11
+                    }
+                ],
+                "inputParams" : [],
+                "outputConnectors" : [
+                    {
+                        "x" : 11,
+                        "y" : 11
+                    }
+                ],
+                "outputParams" : [],
+                "properties" : [
+                    {
+                        "nickname" : "Counter",
+                        "name" : "_COUNT",
+                        "type" : "NUMBER",
+                        "value":"0",
+                        "optional" : false
+                    },
+                    {
+                        "nickname" : "Count until",
+                        "name" : "_COUNT_TO",
+                        "type" : "NUMBER",
+                        "value":"3",
+                        "optional" : false
+                    },
+                    {
+                        "name" : "_SHOW",
+                        "type" : "ARRAY",
+                        "value":"_COUNT_TO,_COUNT",
+                        "optional" : false
+                    }
+                ]
+            },
+            "requires" : [],
+            "libraries" : ["console"]
+        }
+    ]
+}

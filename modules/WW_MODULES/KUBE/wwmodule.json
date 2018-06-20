@@ -1,0 +1,31 @@
+{
+    "name" : "KUBE",
+    "description" : "A module for log to stdout info.",
+    "submodules" : [
+        {
+            "tag" : "KUBE_DEPLOYER",
+            "script" : "KUBE_DEPLOYER.wwm.js",
+            "template" : {
+                "name" : "KUBE DEPLOYER",
+                "tag" : "KUBE_DEPLOYER",
+                "type" : "DEPLOYER",
+                "inputConnectors" : [
+                    {
+                        "x" : 11,
+                        "y" : 11
+                    }
+                ],
+                "inputParams" : [],
+                "outputConnectors" : [
+                    {
+                        "x" : 11,
+                        "y" : 11
+                    }
+                ],
+                "outputParams" : []
+            },
+            "requires" : [],
+            "libraries" : ["console"]
+        }
+    ]
+}

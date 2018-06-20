@@ -1,0 +1,109 @@
+#!/usr/bin/env node
+process.title = generateNameForCluster();
+const path = require('path')
+const cluster = require('cluster')
+console.log("Cluster Name: " + process.title)
+
+const deploy_bootstrap = require('../kube/init');
+const { setLoadBalancer } = require('../utils/load-balance')
+/**
+ * Execution modes for the server:
+ * REST: Only API REST.
+ * PIPER: Only Pipeline Functionality
+ * REST_PIPER: Both of them.
+ */
+const EXECUTION_MODE = {
+    REST: "REST",
+    REST_PIPER: "REST_PIPER",
+    PIPER: "PIPER"
+}
+/**
+ * IMPORTANT ENV VARS:
+ * WW_MODE = [REST,PIPER,REST_PIPER]
+ * WORKERS = [0..*]
+ * NODE_ENV = ["production", "development"]
+ */
+
+async function main() {
+    //The init process may fail and the main process will fail
+    
+    if (cluster.isMaster) {
+        await deploy_bootstrap.init(true);
+        setLoadBalancer((reqS, resT, tPipe, usage, mem) => {
+            //Do somthing with the load balancer
+            if(resT > 3000){
+                //More than 3 secs kubernetes will kill us
+                process.exit();
+            }
+        })
+        var numCPUs = 1;
+        //fork once per cpu
+        if (process.env.WORKERS) {
+            try {
+                numCPUs = Number(process.env.WORKERS)
+            } catch (err) { }
+        } else {
+            //numCPUs = require('os').cpus().length;
+        }
+        for (var i = 0; i < numCPUs; i++) {
+            cluster.fork();
+        }
+
+        //if a worker is online
+        cluster.on('online', (worker) => {
+            console.log('%s Worker is running on %s', new Date().toISOString(), worker.process.pid);
+        });
+        //if a worker dies, log that and create a new one
+        cluster.on('exit', (worker, code, signal) => {
+            console.log('%s Worker %s killde=%i', new Date().toISOString(), worker.process.pid,code);
+            cluster.fork();
+        });
+    } else {
+        /**
+         * Flexible initiation
+         */
+        await deploy_bootstrap.init(false);
+        if (process.env.WW_MODE === EXECUTION_MODE.REST_PIPER) {
+            initPipeline();
+            initREST();
+        } else if (process.env.WW_MODE === EXECUTION_MODE.REST) {
+            initREST();
+        } else if (process.env.WW_MODE === EXECUTION_MODE.PIPER) {
+            initPipeline();
+        } else {
+            //Default beahavour = REST_PIPER
+            initPipeline();
+            initREST();
+        }
+    }
+}
+
+function generateNameForCluster() {
+    return Date.now().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+}
+
+function initREST() {
+    //Starts API REST
+    require('./www')
+}
+
+function initPipeline() {
+    //Load local modules
+    const { loadModulesFromDirectory } = require('../modules/loader');
+    loadModulesFromDirectory().then(() => { }).catch(err => { })
+    
+    //Checking new modules?
+    const checks = require('../utils/check-modules')
+    checks.moduleWatchdog();
+
+    //Checking ARACHNI Alive
+    const checkArchs = require('../utils/check-arachni')
+    checkArchs.arachniWatchdog();
+
+    //Starts the pipeline retriever
+    const pipelineJobQueue = require('../modules/pipelineJobQueue');
+    pipelineJobQueue.start();
+}
+
+
+main();

@@ -1,0 +1,40 @@
+{
+    "name" : "WEB_HOOK",
+    "description" : "A module for log to stdout info.",
+    "submodules" : [
+        {
+            "tag" : "WEB_HOOK_START",
+            "script" : "webhook.wwm.js",
+            "template" : {
+                "name" : "Web Hook",
+                "tag" : "WEB_HOOK_START",
+                "type" : "START",
+                "status" : 0,
+                "outputConnectors" : [
+                    {
+                        "x" : 11,
+                        "y" : 11
+                    }
+                ],
+                "outputParams" : [],
+                "properties" : [
+                    {
+                        "nickname" : "webhook",
+                        "name" : "_WEBHOOK",
+                        "type" : "WEBHOOK",
+                        "value":"",
+                        "optional" : false
+                    },
+                    {
+                        "name" : "_SHOW",
+                        "type" : "ARRAY",
+                        "value":"_WEBHOOK",
+                        "optional" : false
+                    }
+                ]
+            },
+            "requires" : [],
+            "libraries" : ["console"]
+        }
+    ]
+}

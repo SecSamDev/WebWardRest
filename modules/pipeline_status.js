@@ -1,0 +1,9 @@
+const PIPELINE_STATUS = {
+    WAITING: 0,
+    STARTED: 1,
+    SUCCESS: 2,
+    ERROR: 3,
+    END: 4,
+    INACTIVE: 5
+}
+exports.PIPELINE_STATUS = PIPELINE_STATUS;

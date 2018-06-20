@@ -1,0 +1,25 @@
+{
+    "name" : "LOGER",
+    "description" : "A module for log to stdout info.",
+    "submodules" : [
+        {
+            "tag" : "LOGER_STDOUT",
+            "script" : "LOGER.wwm.js",
+            "template" : {
+                "name" : "LOGGER",
+                "tag" : "LOGER_STDOUT",
+                "type" : "REPORT_NOTIFIER",
+                "status" : 0,
+                "inputConnectors" : [
+                    {
+                        "x" : 11,
+                        "y" : 11
+                    }
+                ],
+                "inputParams" : []
+            },
+            "requires" : [],
+            "libraries" : ["console"]
+        }
+    ]
+}

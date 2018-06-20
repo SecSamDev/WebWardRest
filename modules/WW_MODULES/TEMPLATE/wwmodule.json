@@ -1,0 +1,102 @@
+{
+    "name" : "TEMPLATE ENGINE",
+    "description" : "A module for transforming JSON objects into text in HTML or other types.",
+    "submodules" : [
+        {
+            "tag" : "TEXT_TEMPLATE",
+            "script" : "TEMPLATE.wwm.js",
+            "template" : {
+                "name" : "Text Template",
+                "tag" : "TEXT_TEMPLATE",
+                "type" : "ANY",
+                "status" : 0,
+                "inputConnectors" : [
+                    {
+                        "x" : 11,
+                        "y" : 11
+                    }
+                ],
+                "inputParams" : [],
+                "errorConnectors" : [
+                    {
+                        "x" : 11,
+                        "y" : 11
+                    }
+                ],
+                "errorParams" : [],
+                "outputConnectors": [
+                    {
+                        "x": 11,
+                        "y": 11
+                    }
+                ],
+                "outputParams": [],
+                "properties" : [
+                    {
+                        "nickname" : "Template",
+                        "name" : "_TEMPLATE",
+                        "type" : "TEXT",
+                        "value":"HELLO this is a simple #{_MESSAGE} test",
+                        "optional" : true
+                    },
+                    {
+                        "name" : "_SHOW",
+                        "type" : "ARRAY",
+                        "value":"_TEMPLATE",
+                        "optional" : false
+                    }
+                ]
+            },
+            "requires" : [],
+            "libraries" : ["console"]
+        },
+        {
+            "tag" : "HTML_TEMPLATE",
+            "script" : "HTML_TEMPLATE.wwm.js",
+            "template" : {
+                "name" : "Html Template",
+                "tag" : "HTML_TEMPLATE",
+                "type" : "ANY",
+                "status" : 0,
+                "inputConnectors" : [
+                    {
+                        "x" : 11,
+                        "y" : 11
+                    }
+                ],
+                "inputParams" : [],
+                "errorConnectors" : [
+                    {
+                        "x" : 11,
+                        "y" : 11
+                    }
+                ],
+                "errorParams" : [],
+                "outputConnectors": [
+                    {
+                        "x": 11,
+                        "y": 11
+                    }
+                ],
+                "outputParams": [],
+                "properties" : [
+                    {
+                        "nickname" : "Template",
+                        "name" : "_TEMPLATE",
+                        "type" : "TEXT",
+                        "value":"p Hello #{_MESSAGE}",
+                        "optional" : true
+                    },
+                    {
+                        "name" : "_SHOW",
+                        "type" : "ARRAY",
+                        "value":"_TEMPLATE",
+                        "optional" : false
+                    }
+                ]
+            },
+            "requires" : ["pug"],
+            "libraries" : ["console"]
+        }
+    ]
+}

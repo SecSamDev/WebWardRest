@@ -1,0 +1,49 @@
+{
+    "name" : "CAST",
+    "description" : "A module for casting values",
+    "submodules" : [
+        {
+            "tag" : "CAST_TO",
+            "script" : "CAST.wwm.js",
+            "template" : {
+                "name" : "Cast Values",
+                "tag" : "CAST_TO",
+                "type" : "ANY",
+                "status" : 0,
+                "inputConnectors" : [
+                    {
+                        "x" : 11,
+                        "y" : 11
+                    }
+                ],
+                "inputParams" : [],
+                "outputConnectors" : [
+                    {
+                        "x" : 11,
+                        "y" : 11
+                    }
+                ],
+                "outputParams" : [],
+                "properties" : [
+                    {
+                        "nickname" : "Cast Values",
+                        "name" : "_VALUES",
+                        "type" : "HASH_OBJECT",
+                        "value": {
+                            "_SOMTHING" : "_MESSAGE"
+                        },
+                        "optional" : false
+                    },
+                    {
+                        "name" : "_SHOW",
+                        "type" : "ARRAY",
+                        "value":"_VALUES",
+                        "optional" : false
+                    }
+                ]
+            },
+            "requires" : [],
+            "libraries" : ["console"]
+        }
+    ]
+}

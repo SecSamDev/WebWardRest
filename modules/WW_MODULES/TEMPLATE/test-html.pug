@@ -1,0 +1,7 @@
+p #{_MESSAGE}'s Pug source code!
+p Hello #{USER.Name} #{USER.Surname}
+p You have #{USER.Friends.length} friends
+ul
+    each val in USER.Friends
+        li
+            p #{val.Name} #{val.Surname}

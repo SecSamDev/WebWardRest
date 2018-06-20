@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: webward-rest-service
+spec:
+  selector:
+    app: webward
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80

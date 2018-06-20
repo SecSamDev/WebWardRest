@@ -1,0 +1,30 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: webward-deployment
+spec:
+  selector:
+    matchLabels:
+      app: webward
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  template: # create pods using pod definition in this template
+    metadata:
+      # unlike pod-nginx.yaml, the name is not included in the meta data as a unique name is
+      # generated from the deployment name
+      labels:
+        app: webward
+    spec:
+      containers:
+      - name: webward
+        image: secsamdev/webward
+        ports:
+        - containerPort: 80
+        env:
+        - name: PGHOST
+          value: "database"
+        - name: PGUSER
+          value: "webward"
+        - name: PGPASSWORD
+          value: "webward"
+        - name: PGDATABASE
+          value: "webward"

@@ -1,0 +1,41 @@
+{
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": {
+        "name": "webward",
+        "labels": {
+            "app": "webward"
+        }
+    },
+    "spec": {
+        "replicas": 1,
+        "selector": {
+            "matchLabels": {
+                "app": "webward"
+            }
+        },
+        "template": {
+            "metadata": {
+                "labels": {
+                    "app": "webward"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "name": "webward",
+                        "image": "secsamdev/webward",
+                        "ports": [
+                        {
+                            "containerPort": 80
+                        }],
+                        "imagePullPolicy" : "Always"
+                    }
+                ],
+                "imagePullSecrets": [{
+                    "name" : "webward-secret"
+                }]
+            }
+        }
+    }
+}

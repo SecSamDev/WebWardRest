@@ -1,0 +1,82 @@
+{
+    "name": "WAPPALYZER",
+    "description": "A module for sending information across Telegram.org Services",
+    "submodules": [
+        {
+            "tag": "WAPPALYZER",
+            "script": "WAPPALYZER.wwm.js",
+            "template": {
+                "name": "Wappalyzer Scan",
+                "tag": "WAPPALYZER",
+                "type": "ANY",
+                "status": 0,
+                "inputConnectors": [
+                    {
+                        "x": 11,
+                        "y": 11
+                    }
+                ],
+                "inputParams": [],
+                "errorConnectors": [
+                    {
+                        "x": 11,
+                        "y": 11
+                    }
+                ],
+                "errorParams": [],
+                "outputConnectors": [
+                    {
+                        "x": 11,
+                        "y": 11
+                    }
+                ],
+                "outputParams": [],
+                "properties": [
+                    {
+                        "nickname": "URL",
+                        "name": "_SCAN_URL",
+                        "type": "URL",
+                        "value": "localhost",
+                        "optional": false
+                    },
+                    {
+                        "nickname": "User Agent",
+                        "name": "_USER_AGENT",
+                        "type": "STRING",
+                        "value": "WEBWARDv1.0",
+                        "optional": false
+                    },
+                    {
+                        "nickname": "Max URLs",
+                        "name": "_MAX_URL",
+                        "type": "NUMBER",
+                        "value": 10,
+                        "optional": false
+                    },
+                    {
+                        "nickname": "Max Depth",
+                        "name": "_MAX_DEPTH",
+                        "type": "NUMBER",
+                        "value": 3,
+                        "optional": false
+                    },
+                    {
+                        "name": "_SHOW",
+                        "type": "ARRAY",
+                        "value": "_SCAN_URL,_USER_AGENT",
+                        "optional": false
+                    }
+                ]
+            },
+            "requires": [],
+            "libraries": [
+                "wappalyzer",
+                "console"
+            ],
+            "injectors": [
+                "report_store",
+                "project_info"
+            ]
+        }
+    ]
+}

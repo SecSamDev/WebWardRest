@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webward
+spec:
+  volumes:
+  - name: shared-data
+    emptyDir: {}
+  containers:
+  - name: webward
+    image: secsamdev/webward
+    ports:
+      - containerPort: 80
+    env:
+      - name: PGHOST
+        value: "database"
+      - name: PGUSER
+        value: "webward"
+      - name: PGPASSWORD
+        value: "webward"
+      - name: PGDATABASE
+        value: "webward"

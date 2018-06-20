@@ -1,0 +1,6 @@
+source 'https://rubygems.org' do
+    # Gems here
+    gem 'openssl'
+    gem 'zlib' 
+    gem 'msgpack'
+end

@@ -1,0 +1,27 @@
+{
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": {
+        "name": "ww-arachni-2"
+    },
+    "spec": {
+        "type": "NodePort",
+        "ports": [
+            {
+                "name" : "grid",
+                "port": 7331,
+                "protocol": "TCP",
+                "targetPort": 7331
+            },
+            {
+                "name" : "ssh",
+                "port": 22,
+                "protocol": "TCP",
+                "targetPort": 22
+            }
+        ],
+        "selector": {
+            "app": "ww-arachni"
+        }
+    }
+}
