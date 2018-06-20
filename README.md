@@ -2,6 +2,10 @@
 
 Continuous Security Platform.
 
+![DashBoard](./DashboardWW.png)
+
+![PipelineVisualEditor](./PipelineVisualEditorWW.png)
+
 ### Installation
 
 Use it as part of a Kubernetes cluster, as a simple docker container (partiall support) or as baremetal deployment.
