@@ -6,9 +6,12 @@ Continuous Security Platform.
 
 Use it as part of a Kubernetes cluster, as a simple docker container (partiall support) or as baremetal deployment.
 
+[Installation for CentOS 7](https://github.com/SecSamDev/WebWardRest/blob/master/bare-metal-installation.md)
 #### Requirements
 
 It required a secret to access the DockerHub for webward and the secret must be called "webward-secret". The image of the container by default is secsamdev/webward.
+
+[secsamdev/webward](https://hub.docker.com/r/secsamdev/webward/)
 ```
 kubectl create secret docker-registry webward-secret --docker-server="docker.io/secsamdev" --docker-username="" --docker-password="" --docker-email=""
 ```
