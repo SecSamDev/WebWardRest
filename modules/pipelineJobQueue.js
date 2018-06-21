@@ -4,7 +4,16 @@ const fs = require('fs')
 const { Console } = require('console')
 const { findModuleInLibrary } = require('./module_library');
 const { loadModulesFromURL } = require('./loader');
-const timeout = process.env.WW_TIMER ? process.env.WW_TIMER : 5000;
+/**
+ * Number of second between pipeline notifys
+ */
+var timeout;
+try{
+    timeout = process.env.WW_TIMER ? parseInt(process.env.WW_TIMER) : 10;
+}catch(err){
+    timeout = 10;
+}
+
 const { WebWardModule } = require('./ww_module');
 const util = require('util')
 const { PipelineNode, NodeParameter, NodeConnector, Pipeline, pipelineNodeFromJSON } = require('./pipeline')
@@ -144,7 +153,7 @@ async function pipelineAcquirer() {
             }
         }
 
-        let controller = new PipeLifecycleController(pipeline, db, 2, pipeConsole);
+        let controller = new PipeLifecycleController(pipeline, db, timeout, pipeConsole);
         controllers.push(controller)
         pipeConsole.log(`${Date.now()} :: ${pipeline.id} :: NEW CONTROLLER`)
     } catch (err) {

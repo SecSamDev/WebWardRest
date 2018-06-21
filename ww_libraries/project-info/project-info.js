@@ -35,7 +35,7 @@ function generateInjectionFunction(node) {
                 UPDATE web_projects
                     SET platform=$2,system=$3
                 WHERE id=$1
-            `, [dbPIPE.rows[0].id, report, platform,system])
+            `, [dbPIPE.rows[0].id, platform,system])
         } catch (err) {
             throw Error("Could not save data")
         }

@@ -8114,6 +8114,7 @@ var ObjectTypeComponent = /** @class */ (function () {
             return this._param;
         },
         set: function (prm) {
+            this.refParam = prm;
             Object.assign(this._param, prm);
             this._param.value = JSON.stringify(prm.value, null, "\t");
             this._param.decoratorValue = this._param.value;
@@ -8126,15 +8127,21 @@ var ObjectTypeComponent = /** @class */ (function () {
     };
     ObjectTypeComponent.prototype.save = function () {
         var _this = this;
-        this.pipService.updateNodeForPipeline(this.node).subscribe(function (data) {
-            _this.alert.success("Propertie: " + _this.param.name + " saved");
-        }, function (err) {
-            _this.alert.error("Cannot save propertie: " + _this.param.name);
-        });
+        try {
+            this.refParam.value = JSON.parse(this._param.value);
+            this.pipService.updateNodeForPipeline(this.node).subscribe(function (data) {
+                _this.alert.success("Propertie: " + _this._param.name + " saved");
+            }, function (err) {
+                _this.alert.error("Cannot save propertie: " + _this._param.name);
+            });
+        }
+        catch (err) {
+            this.alert.error("Cannot save propertie: " + this._param.name);
+        }
     };
     ObjectTypeComponent.prototype.delete = function () {
         var _this = this;
-        this.node.removeParam(this.param);
+        this.node.removeParam(this.refParam);
         this.pipService.updateNodeForPipeline(this.node).subscribe(function (data) {
             _this.alert.success("Propertie removed");
         }, function (err) {
@@ -8619,6 +8626,7 @@ var TypesComponent = /** @class */ (function () {
         var propertie = new __WEBPACK_IMPORTED_MODULE_1__pipeline_node__["c" /* PipelineNodeAtribute */]();
         propertie.name = "Propertie n" + this.properties.length;
         propertie.value = "";
+        propertie.type = 'STRING';
         var pos = this.properties.push(propertie);
         this.selectedParam = this.properties[pos - 1];
     };
@@ -8638,6 +8646,8 @@ var TypesComponent = /** @class */ (function () {
     };
     TypesComponent.prototype.loadComponent = function () {
         var comp;
+        if (!this.selectedParam.type)
+            this.selectedParam.type = 'STRING';
         switch ((this.selectedParam.type).toUpperCase()) {
             case 'WEBHOOK':
                 comp = __WEBPACK_IMPORTED_MODULE_3__webhook_webhook_type_component__["a" /* WebhookTypeComponent */];

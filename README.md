@@ -94,6 +94,7 @@ Para el contenedor principal que ejecuta el servidor REST y la funcionalidad en 
 
 - **EXECUTION_MODE**: Permite cambiar el modo de ejecución del contenedor pudiendo elegir entre solo API REST, solo Cluster de Pipelines o un modo mixto. Los valores admitidos son: REST, REST_PIPER y PIPER. Por defecto se aplica el modo REST_PIPER (ambos).
 
+- **WW_TIMER**: Tiempo entre notificaciones de actualización de un pipeline en la base de datos en segundos. Ej: 5.
 
 - **PGUSER**: Usuario de acceso a la base de datos PostgreSQL. Por defecto: *webward*
 

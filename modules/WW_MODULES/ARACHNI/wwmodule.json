@@ -77,6 +77,13 @@
                         "optional": false
                     },
                     {
+                        "nickname": "Persistent Scan",
+                        "name" : "_PERSISTENT",
+                        "type": "BOOLEAN",
+                        "value": "true",
+                        "optional": true
+                    },
+                    {
                         "nickname": "Scan Options",
                         "name": "_SCAN_OPTS",
                         "type": "JSON",

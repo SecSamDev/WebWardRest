@@ -53,7 +53,7 @@ class ArachniAPI {
 
     }
     setScanOptions(opts) {
-        this.scanOpts = opts;
+        Object.assign(this.scanOpts,opts);
     }
     setScanChecks(checks) {
         if (checks.length > 0)

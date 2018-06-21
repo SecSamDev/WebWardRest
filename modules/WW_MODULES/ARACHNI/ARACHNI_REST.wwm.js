@@ -14,7 +14,6 @@ if (!myURL || !myURL.value || myURL.value === '') {
 } else {
     var saveTime = Date.now();
     if (scanService) {//Exists Scan Service-------------------------------------------
-        var arachs = scanService;
         if (status && (status.value === 'scanning' || status.value === 'ready' || status.value === 'paused' || status.value === 'pausing' || status.value === 'preparing')) {//ALIVE => Monitor scan progress
             scanService.getProgress((err, resp) => {
                 if (err) {
@@ -96,11 +95,14 @@ if (!myURL || !myURL.value || myURL.value === '') {
             //If scan options then modify scan opts in arachni
             var scanOpts = node.getParam('_SCAN_OPTS');
             if (scanOpts && scanOpts.value) {
+                console.log("Set scan opts")
+                console.log(scanOpts.value)
                 arachs.setScanOptions(scanOpts.value)
             }
             //If checkList set it
             var checkList = node.getParam('_CHECKS');
             if (checkList && checkList.value) {
+                console.log("Set checks")
                 arachs.setScanChecks(checkList.value)
             }
             //Register service and end this iteration
@@ -151,7 +153,7 @@ function endScan(report, saveTime) {
             node.removePropertyFuture('_STATUS'.saveTime)
             try{
                 node.removeService('SCANNER')
-            }catch(Err){}
+            }catch(err){}
             node.endInSuccessFuture(saveTime)
         }catch(err){
             console.log(err)

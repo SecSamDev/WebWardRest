@@ -28,7 +28,7 @@ class PipeLifecycleController {
      * @param {number} timeout Time between pipeline updates
      * @param {Console} pipeConsole Loggin console for this Controller
      */
-    constructor(pipe, db, timeout = 2, pipeConsole = console) {
+    constructor(pipe, db, timeout = 5, pipeConsole = console) {
         this.pipe = pipe;
         this.db = db;
         /**
