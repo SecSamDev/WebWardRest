@@ -82,7 +82,7 @@ La configuración del servidor web Apache se hace modificando el archivo httpd.c
   ServerAlias www.webward.com
   DocumentRoot /var/www/webward/
   Options -Indexes
-  ProxyRequests on
+  ProxyRequests off
   ProxyPass /index.html !
   ProxyPass /public/ !
   ProxyPass / http://127.0.0.1:3000/
