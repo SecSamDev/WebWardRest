@@ -13,11 +13,14 @@ exports.findNodes = async (req, res, next) => {
     if (req.params !== null && req.params !== undefined && req.params.name && typeof req.params.name === 'string') {
         try {
             let resDB = await db.query(`
-                SELECT *
+                SELECT pipeline_nodes.*
                 FROM pipeline_nodes
-                WHERE 
-                    pipe=$1
-                    AND owner=$2
+                INNER JOIN
+                    pipelines
+                        ON pipeline_nodes.pipe=pipelines.id
+                WHERE
+                    pipeline_nodes.pipe=$1 AND
+                    pipelines.owner=$2
             `, [req.params.name,req.user.id]);
             if (resDB.rows.length >= 1) {
                 status = 200;
@@ -42,7 +45,7 @@ exports.findAllNodes = async (req, res, next) => {
             INNER JOIN
                 pipelines
                     ON pipeline_nodes.pipe=pipelines.id
-            WHERE 
+            WHERE
                 pipelines.owner=$1
         `, [req.user.id]);
         if (resDB.rows.length < 1)
@@ -125,9 +128,10 @@ exports.deleteNode = async (req, res, next) => {
                     throw new Error('You are not the owner')
                 }
                 let resDB = await db.query(`
-                DELETE FROM pipeline_nodes 
-                WHERE 
-                    id=$1 AND pipe=$2
+                    DELETE FROM pipeline_nodes 
+                    WHERE 
+                        id=$1 AND 
+                        pipe=$2
                 `, [req.params.name, req.params.pipename]);
                 if (resDB.rowCount >= 1) {
                     status = 200;

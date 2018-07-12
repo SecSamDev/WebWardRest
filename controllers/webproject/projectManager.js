@@ -143,7 +143,7 @@ exports.findWebProject = async (req, res, next) => {
                         ON web_projects.project_manager=users.id
                     WHERE 
                         web_projects.id=$1 
-                        AND (project_manager=$2)
+                        AND web_projects.project_manager=$2
                 `, [req.params.name, req.user.id]);
                 if (resDB.rows.length >= 1) {
                     status = 200;
@@ -164,19 +164,19 @@ exports.findWebProjects = async (req, res, next) => {
     try {
         let resDB = await db.query(`
         SELECT 
-            web_projects.id
+            web_projects.id,
             web_projects.name,
             web_projects.description,
             web_projects.project_manager,
             web_projects.create_date,
             web_projects.last_update,
-            web_projects.status
+            web_projects.status,
             users.name AS project_manager_name  
         FROM web_projects 
         INNER JOIN users 
             ON web_projects.project_manager=users.id
         WHERE 
-            (web_projects.project_manager=$1)
+            web_projects.project_manager=$1
         `, [req.user.id]);
         if (resDB.rows.length >= 1) {
             status = 200;
@@ -185,9 +185,7 @@ exports.findWebProjects = async (req, res, next) => {
         else
             throw new Error("Data not found")
 
-    } catch (err) {
-        console.log(err)
-    }
+    } catch (err) {}
     res.status(status).send(data);
 }
 /**

@@ -142,6 +142,13 @@ function sendMessage(saveDate = Date.now()) {
         tel.sendMessage(msg).then((msgSend) => {
             //Do it in future
             retry.value = 3;
+            node.addOutParametersFuture({
+                "nickname": "Message",
+                "name": "_MESSAGE",
+                "type": "STRING",
+                "value": msg,
+                "optional": false
+            }, saveDate);
             node.endInSuccessFuture(saveDate);
         }).catch(err => {
             if (retry.value <= 0) {

@@ -5,9 +5,9 @@ class ArachniScanOptions {
     constructor() {
         this.scope = {
             auto_redundant_paths : true,
-            directory_depth_limit : 10,
-            dom_depth_limit : 10,
-            dom_event_limit : 10,
+            directory_depth_limit : 1000,
+            dom_depth_limit : 1000,
+            dom_event_limit : 1000,
             exclude_binaries : true,
             exclude_content_patterns : [],
             exclude_file_extensions : [],
@@ -16,7 +16,7 @@ class ArachniScanOptions {
             https_only : false,
             include_path_patterns : [],
             include_subdomains : true,
-            page_limit : 10,
+            page_limit : 1000,
             redundant_path_patterns : {},
             restrict_paths : [],
             url_rewrites : []
@@ -76,12 +76,22 @@ class ArachniScanOptions {
             ssl_version :"TLSv1",
             user_agent : "WebWard/v#1.0"
         };/*
-        this.login = {
+        this.session = {
             check_pattern : null,
             check_url : null
         };*/
         /**
          * Plugins to load, by name, along with their options.
+         * 
+         * Ex: "plugins": {
+         * 
+         *  "autologin": {
+         * 
+         *          "url": "http://192.168.99.100:31614/WebGoat/login.mvc",
+         *          "parameters": "username=arachni&password=arachni",
+         *          "check": "What is WebGoat?"
+         *      }
+         *  }
          */
         this.plugins = {
         }
@@ -98,6 +108,7 @@ class ArachniScanOptions {
         this.grid = false;
         this.grid_mode = null;
         this.spawns = 0;
+        this.url = null;
     }
 }
 exports.ArachniScanOptions = ArachniScanOptions;

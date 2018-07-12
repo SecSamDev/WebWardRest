@@ -216,9 +216,14 @@ class PipeLifecycleController {
                                             } else if (node.status === PIPELINE_STATUS.STARTED) {
                                                 let param;
                                                 if ((param = node.getParameter('_FORCES_RESTART'))) {
-                                                    if (param === 'true') {
+                                                    if (param.value === 'true') {
                                                         restart = true;
                                                         this.restartPipeline(node);
+                                                    }
+                                                }else if ((param = node.getParameter('_FORCES_END'))) {
+                                                    if (param.value === 'true') {
+                                                        restart = true;
+                                                        this.forcePipelineEnd(node);
                                                     }
                                                 }
                                             }
@@ -298,7 +303,11 @@ class PipeLifecycleController {
      * @param {PipelineNode} node A reference to the node that has the error.
      */
     iGetAnError(node) {
-        if (node.errorNodes.length === 0) {
+        if(node.getProperty('_FORCES_END')){
+            this.pipe.status = PIPELINE_STATUS.ERROR;
+            node.status = PIPELINE_STATUS.ERROR;
+            this.forcePipelineEnd(node)
+        }else if (node.errorNodes.length === 0) {
             node.status = PIPELINE_STATUS.ERROR;
             //Save node status with i_params and o_params in DB
             this.iNeedToSaveData(node);
@@ -335,7 +344,11 @@ class PipeLifecycleController {
      * @param {PipelineNode} node A reference to the node that has end with success.
      */
     iEndSuccessfully(node) {
-        if (node.outputNodes.length === 0) {
+        if(node.getProperty('_FORCES_END')){
+            this.pipe.status = PIPELINE_STATUS.SUCCESS;
+            node.status = PIPELINE_STATUS.SUCCESS;
+            this.forcePipelineEnd(node)
+        }else if (node.outputNodes.length === 0) {
             node.status = PIPELINE_STATUS.SUCCESS;
             //Save node status with i_params and o_params in DB
             this.iNeedToSaveData(node);
@@ -413,16 +426,25 @@ class PipeLifecycleController {
         })
 
     }
+    /**
+     * A node has a _FORCES_END property to end
+     * @param {PipelineNode} node 
+     */
     forcePipelineEnd(node) {
         //Only a  node with _FORCES_END parameter can finish the lifecycle
-        if (node.type === 'START' && node.getParameter('_FORCES_END')) {
+        if (node.getProperty('_FORCES_END')) {
+            this.killController();
             this.pipe.status = PIPELINE_STATUS.END;
-            for (let i = 0; i < 3; i++) {
-                updatePipeline(pipe).then(() => {
-                    i = 3;
-                    break;
-                }).catch(err => { })
+            if(node.status === PIPELINE_STATUS.ERROR){
+                this.pipe.status = PIPELINE_STATUS.ERROR;
+            }else if(node.status === PIPELINE_STATUS.SUCCESS){
+                this.pipe.status = PIPELINE_STATUS.SUCCESS;
             }
+            updatePipeline(this.pipe, this.pipe.nodes).then(() => {
+                this.killController();
+            }).catch(err => {
+                this.killController();
+            })
         }
     }
     /**
@@ -431,7 +453,7 @@ class PipeLifecycleController {
      */
     restartPipeline(node) {
         //Only a START node with _FORCES_RESTART parameter can restart the pipeline
-        if (node.type === 'START' && node.getParameter('_FORCES_RESTART')) {
+        if (node.type === 'START' && node.getProperty('_FORCES_RESTART')) {
             this.pipe.status = PIPELINE_STATUS.STARTED;
             for (let node of this.pipe.nodes) {
                 if (node.type !== 'START') {

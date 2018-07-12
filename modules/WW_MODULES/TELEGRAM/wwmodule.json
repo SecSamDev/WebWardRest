@@ -17,6 +17,13 @@
                     }
                 ],
                 "inputParams" : [],
+                "outputConnectors" : [
+                    {
+                        "x" : 11,
+                        "y" : 11
+                    }
+                ],
+                "outputParams" : [],
                 "errorConnectors" : [
                     {
                         "x" : 11,

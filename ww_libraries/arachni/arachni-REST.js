@@ -53,7 +53,7 @@ class ArachniAPI {
 
     }
     setScanOptions(opts) {
-        Object.assign(this.scanOpts,opts);
+        this.scanOpts = opts;
     }
     setScanChecks(checks) {
         if (checks.length > 0)
@@ -66,6 +66,7 @@ class ArachniAPI {
             return;
         this.init = true;
         this.scanOpts.url = scanURL;
+        console.log("Seted scan URL: " + scanURL)
         request.post(url.resolve(this.baseURL, '/scans'), {
             'json': true,
             'body': this.scanOpts,
@@ -198,7 +199,10 @@ class ArachniAPI {
             if (err)
                 cb(processError(err));
             else {
-                if (body.issues && body.issues.length > 0) {
+                console.log(body)
+                if(body.error){
+                    cb(body.error)
+                }else if (body.issues && body.issues.length > 0) {
                     cb(null, {
                         "url": body.options && body.options.url ? body.options.url : "",
                         "issues": body.issues.map((val, i, arr) => {
@@ -209,10 +213,19 @@ class ArachniAPI {
                                 "vector": ((val.vector && val.vector.type) ? val.vector.type : "") + ((val.vector && val.vector.class) ? val.vector.class : "") + ((val.vector && val.vector.action) ? val.vector.action : ""),
                                 "url": ((val.page && val.page.dom && val.page.dom.url) ? val.page.dom.url : "")
                             }
-                        })
+                        }),
+                        "delta_time" : body.delta_time ? body.delta_time : "0:0:1",
+                        "start_datetime" : body.start_datetime ? body.start_datetime : (new Date()).toISOString(),
+                        "finish_datetime" : body.finish_datetime ? body.finish_datetime : (new Date()).toISOString(),
                     })
                 } else if (body.options && body.options.url) {
-                    cb(null, []);
+                    cb(null, {
+                        "url": body.options && body.options.url ? body.options.url : "",
+                        "issues": [],
+                        "delta_time" : body.delta_time ? body.delta_time : "0:0:1",
+                        "start_datetime" : body.start_datetime ? body.start_datetime : (new Date()).toISOString(),
+                        "finish_datetime" : body.finish_datetime ? body.finish_datetime : (new Date()).toISOString(),
+                    });
                 } else {
                     cb(new Error("Scan not found"));
                 }
@@ -234,10 +247,10 @@ class ArachniAPI {
             if (err)
                 cb(processError(err));
             else {
-                if (body.issues && body.issues.length > 0) {
+                if (body) {
                     cb(null, body)
                 } else {
-                    cb(null, []);
+                    cb(null, {'url' : '',"issues": []});
                 }
             }
         })

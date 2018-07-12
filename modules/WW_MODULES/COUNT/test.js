@@ -10,23 +10,36 @@ async function main() {
     var inputParms = [{
 
     }]
-    var properties = [];
+    var properties = [
+        {
+            "nickname" : "Counter",
+            "name" : "_COUNT",
+            "type" : "NUMBER",
+            "value":"0",
+            "optional" : false
+        },
+        {
+            "nickname" : "Count until",
+            "name" : "_COUNT_TO",
+            "type" : "NUMBER",
+            "value":"10",
+            "optional" : false
+        }
+    ];
     //Selected Module
     var modPath = path.join(__dirname, "./").toString();
     var modInfo = await getModuleFromDirectory(modPath)
 
     const workbench = new ModuleWorkbench(modInfo.mod, modInfo.template, console);
+    workbench.setProperties(properties)
     workbench.setFakeNodeCB((nod) => {
         return () => {
             console.log(nod.i_params)
         }
     })
-    workbench.runController()
-    workbench.runController()
-    workbench.runController()
-    workbench.runController()
-    workbench.runController()
-    workbench.runController()
-    workbench.runController()
+    while(true){
+        workbench.runController()
+        console.log(properties)
+    }
 
 }

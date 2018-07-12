@@ -47,10 +47,24 @@
                         "optional": false
                     },
                     {
+                        "nickname": "Basic Auth Username",
+                        "name": "_USERNAME",
+                        "type": "STRING",
+                        "value": "",
+                        "optional": false
+                    },
+                    {
+                        "nickname": "Basic Auth Password",
+                        "name": "_PASSWORD",
+                        "type": "STRING",
+                        "value": "",
+                        "optional": false
+                    },
+                    {
                         "nickname": "Max URLs",
                         "name": "_MAX_URL",
                         "type": "NUMBER",
-                        "value": 10,
+                        "value": 1000,
                         "optional": false
                     },
                     {

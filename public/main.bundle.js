@@ -1375,7 +1375,7 @@ module.exports = ""
 /***/ "./src/app/dashboard/reports/reports.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-md-4\">\n    <div class=\"list-group\">\n      <h4>Last scan reports</h4>\n      <div *ngFor=\"let report of reports\" (click)=\"onSelect(report)\">\n        <a routerLink=\"/reports/{{report.id}}\" [class.active]=\"report === selectedReport\" class=\"list-group-item list-group-item-action flex-column align-items-start\">\n\n          <div class=\"d-flex w-100 justify-content-between\">\n            <h5 class=\"mb-1\">{{report.name}}</h5>\n            <small *ngIf=\"report.daysAgo === 0\">Today</small>\n            <small *ngIf=\"report.daysAgo != 0\">{{report.daysAgo}} days ago</small>\n          </div>\n          <p class=\"mb-1\">\n            For URL: {{report.data.url}} Total issues: {{report.data.issues.length}}\n          </p>\n          <small>Project: {{report.project}}</small>\n        </a>\n      </div>\n    </div>\n  </div>\n  <div class=\"col-md-8\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <h4 class=\"text-center\">% Vulnerabilities found</h4>\n        <scan-report-chart *ngIf=\"reports && selectedReport\" [report]=\"selectedReport\"></scan-report-chart>\n      </div>\n\n    </div>\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <h4 class=\"text-center\">Vulnerabilities Evolution</h4>\n        <report-chart-temporal *ngIf=\"reports\" [reports]=\"reports\"></report-chart-temporal>\n      </div>\n    </div>\n  </div>\n</div>"
+module.exports = "<div class=\"row\">\n  <div class=\"col-md-4\">\n    <div class=\"list-group\">\n      <h4>Last scan reports</h4>\n      <div *ngFor=\"let report of reports\" (click)=\"onSelect(report)\">\n        <a routerLink=\"/reports/{{report.id}}\" [class.active]=\"report === selectedReport\" class=\"list-group-item list-group-item-action flex-column align-items-start\">\n\n          <div class=\"d-flex w-100 justify-content-between\">\n            <h5 class=\"mb-1\">{{report.name}}</h5>\n            <small *ngIf=\"report.daysAgo === 0\">Today</small>\n            <small *ngIf=\"report.daysAgo != 0\">{{report.daysAgo}} days ago</small>\n          </div>\n          <p class=\"mb-1\" *ngIf=\"report.data && report.data.issues\">\n            For URL: {{report.data.url}} Total issues: {{report.data.issues.length}}\n          </p>\n          <small>Project: {{report.project}}</small>\n        </a>\n      </div>\n    </div>\n  </div>\n  <div class=\"col-md-8\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <h4 class=\"text-center\">% Vulnerabilities found</h4>\n        <scan-report-chart *ngIf=\"reports && selectedReport\" [report]=\"selectedReport\"></scan-report-chart>\n      </div>\n\n    </div>\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <h4 class=\"text-center\">Vulnerabilities Evolution</h4>\n        <report-chart-temporal *ngIf=\"reports\" [reports]=\"reports\"></report-chart-temporal>\n      </div>\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -1410,7 +1410,7 @@ var ReportsComponent = /** @class */ (function () {
         var _this = this;
         this.reportService.getReports().subscribe(function (data) {
             _this.reports = data.filter(function (val, i, arr) {
-                if (val.reporter.toLowerCase() === 'arachni') {
+                if (val.reporter.toLowerCase() === 'arachni' || val.reporter.toLowerCase() === 'webward') {
                     return true;
                 }
                 return false;
@@ -5717,29 +5717,10 @@ var ReportChartTemporalComponent = /** @class */ (function () {
             return this._reports;
         },
         set: function (reps) {
-            var _this = this;
             this._reports = reps;
             if (reps[0] && reps[0].data && reps[0].data.issues) {
-                this.multi = reps.map(function (val, i, arr) {
-                    var day = new Date(val.create_date);
-                    return {
-                        "name": day.getUTCDate() + "/" + (day.getMonth() + 1),
-                        "series": val.data.issues.reduce(function (total, isu, j, arr2) {
-                            _this.addColorForSeverity(isu.severity);
-                            var vulner = total.filter(function (redVal) { return redVal.name === isu.severity; });
-                            if (!vulner || vulner.length === 0) {
-                                total.push({
-                                    "name": isu.severity,
-                                    "value": 1
-                                });
-                            }
-                            else {
-                                vulner[0].value++;
-                            }
-                            return total;
-                        }, [])
-                    };
-                });
+                this.multi = this.reduceAndMap(reps);
+                console.log(this.multi);
             }
         },
         enumerable: true,
@@ -5768,6 +5749,45 @@ var ReportChartTemporalComponent = /** @class */ (function () {
                 this.colorScheme.domain.push("#A10A28");
             }
         }
+    };
+    ReportChartTemporalComponent.prototype.reduceAndMap = function (reps) {
+        var _this = this;
+        console.log(reps);
+        return reps.map(function (val, i, arr) {
+            var day = new Date(val.create_date);
+            return {
+                "name": day.getUTCDate() + "/" + (day.getMonth() + 1),
+                "series": _this.reReduce(val.data.issues.reduce(function (total, isu, j, arr2) {
+                    _this.addColorForSeverity(isu.severity);
+                    var vulner = total.filter(function (redVal) { return redVal.name === isu.severity; });
+                    if (vulner === null || vulner.length === 0) {
+                        total.push({
+                            "name": isu.severity,
+                            "value": 1
+                        });
+                    }
+                    else {
+                        vulner[0].value++;
+                    }
+                    return total;
+                }, []))
+            };
+        });
+    };
+    ReportChartTemporalComponent.prototype.reReduce = function (data) {
+        return data.reduce(function (total, isu, j, arr2) {
+            var vulner = total.filter(function (redVal) { return redVal.name === isu.name; });
+            if (vulner === null || vulner.length === 0) {
+                total.push({
+                    "name": isu.name,
+                    "value": 1
+                });
+            }
+            else {
+                vulner[0].value++;
+            }
+            return total;
+        }, []);
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
@@ -6207,7 +6227,7 @@ module.exports = ""
 /***/ "./src/app/scan-report/scan-report.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class='container'>\n  <div class=\"d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom\">\n    <h4>List of Reports for this Web Project</h4>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-sm-12 col-md-6\">\n      <div class=\"list-group\">\n        <div *ngFor=\"let report of reportList\" (click)=\"onSelect(report)\">\n          <a [class.active]=\"report === selectedReport\" class=\"list-group-item list-group-item-action flex-column align-items-start\">\n\n            <div class=\"d-flex w-100 justify-content-between\">\n              <h5 class=\"mb-1\">{{report.name}}</h5>\n              <small *ngIf=\"report.daysAgo === 0\">Today</small>\n              <small *ngIf=\"report.daysAgo != 0\">{{report.daysAgo}} days ago</small>\n            </div>\n            <p class=\"mb-1\" *ngIf=\"report.reporter.toLowerCase() === 'webward' || report.reporter.toLowerCase() === 'arachni'\">\n              For URL: {{report.data.url}}\n              Total issues: {{report.data.issues.length}}\n            </p>\n            <small>Project: {{report.project}}</small>\n          </a>\n        </div>\n\n      </div>\n      <hr/>\n    </div>\n    <div class=\"col-sm-12 col-md-6\">\n      <view-report [report]=\"selectedReport\"></view-report>\n    </div>\n  </div>\n</div>"
+module.exports = "<div class='container'>\n  <div class=\"d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom\">\n    <h4>List of Reports for this Web Project</h4>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-sm-12 col-md-6\">\n      <div class=\"list-group\">\n        <div *ngFor=\"let report of reportList\" (click)=\"onSelect(report)\">\n          <a [class.active]=\"report === selectedReport\" class=\"list-group-item list-group-item-action flex-column align-items-start\">\n\n            <div class=\"d-flex w-100 justify-content-between\">\n              <h5 class=\"mb-1\">{{report.name}}</h5>\n              <small *ngIf=\"report.daysAgo === 0\">Today</small>\n              <small *ngIf=\"report.daysAgo != 0\">{{report.daysAgo}} days ago</small>\n            </div>\n            <p class=\"mb-1\" *ngIf=\"report.reporter.toLowerCase() === 'webward' || report.reporter.toLowerCase() === 'arachni' && report.data && report.data.issues\">\n              For URL: {{report.data.url}}\n              Total issues: {{report.data.issues.length}}\n            </p>\n            <small>Project: {{report.project}}</small>\n          </a>\n        </div>\n\n      </div>\n      <hr/>\n    </div>\n    <div class=\"col-sm-12 col-md-6\">\n      <view-report [report]=\"selectedReport\"></view-report>\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 

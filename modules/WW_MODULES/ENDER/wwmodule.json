@@ -1,0 +1,40 @@
+{
+    "name" : "ENDER",
+    "description" : "A module for finishing the actual pipeline",
+    "submodules" : [
+        {
+            "tag" : "ENDER",
+            "script" : "END.wwm.js",
+            "template" : {
+                "name" : "End Pipeline",
+                "tag" : "ENDER",
+                "type" : "ANY",
+                "status" : 0,
+                "inputConnectors" : [
+                    {
+                        "x" : 11,
+                        "y" : 11
+                    }
+                ],
+                "inputParams" : [],
+                "properties" : [
+                    {
+                        "nickname" : "Success or Error",
+                        "name" : "_END_AS",
+                        "type" : "STRING",
+                        "value":"Success",
+                        "optional" : false
+                    },
+                    {
+                        "name" : "_SHOW",
+                        "type" : "ARRAY",
+                        "value":"_END_AS",
+                        "optional" : false
+                    }
+                ]
+            },
+            "requires" : [],
+            "libraries" : []
+        }
+    ]
+}

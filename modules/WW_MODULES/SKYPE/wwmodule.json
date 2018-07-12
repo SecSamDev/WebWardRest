@@ -1,0 +1,60 @@
+{
+    "name" : "SKYPE",
+    "description" : "A module for sending messages using SKYPE: https://github.com/SecSamDev/SkypeBotWW",
+    "submodules" : [
+        {
+            "tag" : "SKYPE_BOT",
+            "script" : "SKYPE_BOT.wwm.js",
+            "template" : {
+                "name" : "Skype Bot",
+                "tag" : "SKYPE_BOT",
+                "type" : "REPORT_NOTIFIER",
+                "status" : 0,
+                "inputConnectors" : [
+                    {
+                        "x" : 11,
+                        "y" : 11
+                    }
+                ],
+                "inputParams" : [],
+                "outputConnectors" : [
+                    {
+                        "x" : 11,
+                        "y" : 11
+                    }
+                ],
+                "outputParams" : [],
+                "errorConnectors" : [
+                    {
+                        "x" : 11,
+                        "y" : 11
+                    }
+                ],
+                "errorParams" : [],
+                "properties" : [
+                    {
+                        "nickname" : "Bot Token",
+                        "name" : "_TOKEN",
+                        "type" : "STRING",
+                        "value":"",
+                        "optional" : false
+                    },
+                    {
+                        "name" : "_SHOW",
+                        "type" : "ARRAY",
+                        "value":"_CHAT,_TOKEN",
+                        "optional" : false
+                    },{
+                        "nickname": "URL",
+                        "name": "_URL",
+                        "type": "STRING",
+                        "value": "http://localhost:3987",
+                        "optional": false
+                    }
+                ]
+            },
+            "requires" : [],
+            "libraries" : ["request","console"]
+        }
+    ]
+}

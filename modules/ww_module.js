@@ -274,7 +274,22 @@ function castPropertiesValue(prop) {
                 break;
             case 'ARRAY':
                 try {
-                    ret.value = prop.value.split(',');
+                    if(typeof prop.value === 'string')
+                        ret.value = prop.value.split(',');
+                    else if(prop.value.length)
+                        ret.value = prop.value
+                    else ret.value = []
+                } catch (err) {
+                    ret.value = [];
+                }
+                break;
+            case 'SCAN_PROFILE':
+                try {
+                    if(typeof prop.value === 'string')
+                        ret.value = prop.value.split(',');
+                    else if(prop.value.length)
+                        ret.value = prop.value
+                    else ret.value = []
                 } catch (err) {
                     ret.value = [];
                 }

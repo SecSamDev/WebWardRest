@@ -92,19 +92,34 @@ if (!myURL || !myURL.value || myURL.value === '') {
             if (scanID && scanID.value != "") {
                 arachs.scanID = scanID.value;
             }
+            //Autologin
+            var loginParm = node.getParam('_LOGIN_PARMS');
+            var loginURL = node.getParam('_LOGIN_URL');
+            var loginCheck = node.getParam('_LOGIN_CHECK');
             //If scan options then modify scan opts in arachni
             var scanOpts = node.getParam('_SCAN_OPTS');
             if (scanOpts && scanOpts.value) {
+                //Set autologin
+                if (loginParm && loginParm.value !== '' && loginURL && loginURL.value !== '' && loginCheck && loginCheck.value !== '' && scanOpts.value.plugins) {
+                    scanOpts.value.plugins['autologin'] = {
+                        "url" : loginURL.value,
+                        "parameters" : loginParm.value,
+                        "check" : loginCheck.value
+                    }
+                }
                 console.log("Set scan opts")
                 console.log(scanOpts.value)
                 arachs.setScanOptions(scanOpts.value)
             }
+            
             //If checkList set it
             var checkList = node.getParam('_CHECKS');
             if (checkList && checkList.value) {
                 console.log("Set checks")
+                console.log(checkList.value)
                 arachs.setScanChecks(checkList.value)
             }
+            
             //Register service and end this iteration
             var asdas = node.registerService('SCANNER', arachs);
             console.log("Registrado servicio?" + asdas)
@@ -126,6 +141,18 @@ function analizeReport(resp, saveTime) {
     if(storeReport){
         //If library available store report
         storeReport(resp,'ARACHNI').then(()=>{}).catch(err=>{});
+    }
+    if(resp.delta_time){
+        try{
+            var delta = new Date(resp.delta_time);
+            node.addPropertyFuture({
+                "nickname": "Runtime",
+                "name": "_RUNTIME",
+                "type": "NUMBER",
+                "value": delta.valueOf(),
+                "optional": true
+            }, saveTime);
+        }catch(err){}
     }
     node.addPropertyFuture({
         "nickname": "Report",
@@ -157,6 +184,7 @@ function endScan(report, saveTime) {
             node.endInSuccessFuture(saveTime)
         }catch(err){
             console.log(err)
+            endError(err && err.message ? err.message : "Failed to store report",saveTime);
         }
     };
     var forceDeletion = node.getParam('_PERSISTENT')

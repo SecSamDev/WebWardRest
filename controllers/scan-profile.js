@@ -3,7 +3,7 @@ const db = require('../db/index')
 exports.createScanTemplate = async (req, res, next) => {
     let status = 500;
     let data = { 'error': 'Data not Valid' }
-    if (req.user && req.user.role === 3) {
+    if (req.user && req.user.role >= 2) {
         try {
             let name = "";
             if (req.body.name && typeof req.body.name == 'string')
@@ -40,7 +40,7 @@ exports.createScanTemplate = async (req, res, next) => {
 exports.deleteScanTemplate = async (req, res, next) => {
     let status = 500;
     let data = { message: 'Data not valid' };
-    if (req.user && req.user.role === 3 && req.params !== null && req.params !== undefined && req.params.name && typeof req.params.name === 'string') {
+    if (req.user && req.user.role >= 2 && req.params !== null && req.params !== undefined && req.params.name && typeof req.params.name === 'string') {
         try {
             let resDB = await db.query(`
             DELETE FROM scan_profile 
@@ -63,7 +63,7 @@ exports.deleteScanTemplate = async (req, res, next) => {
 exports.updateScanTemplate = async (req, res, next) => {
     let status = 500;
     let data = { message: 'Data not valid' };
-    if (req.user && req.user.role === 3 && req.params !== null && req.params !== undefined && req.params.name && typeof req.params.name === 'string') {
+    if (req.user && req.user.role >= 2 && req.params !== null && req.params !== undefined && req.params.name && typeof req.params.name === 'string') {
         try {
             let dbRes = await db.query('SELECT * FROM scan_profile WHERE id=$1 AND owner=$2', [req.params.name, req.user.id]);
             if (dbRes.rows.length < 1) {
@@ -106,7 +106,7 @@ exports.updateScanTemplate = async (req, res, next) => {
 exports.findScanTemplate = async (req, res, next) => {
     let status = 500;
     let data = { message: 'Data not valid' };
-    if (req.user && req.user.role === 3) {
+    if (req.user && req.user.role >= 2) {
         try {
             let dbRes = await db.query('SELECT * FROM scan_profile WHERE owner=$1', [req.user.id]);
             if (dbRes.rowCount >= 1) {

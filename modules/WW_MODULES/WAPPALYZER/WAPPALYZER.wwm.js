@@ -49,17 +49,25 @@ if (!myURL || !myURL.value || myURL.value === '') {
     } else {//--NO SERVICE
         try {
             //Launch a new instance
-            var scan = wappalyzer(myURL.value, {
+            var scanOpts = {
                 debug: false,
                 delay: 500,
-                maxDepth: maxDepth && maxDepth.value ? maxDepth.value : 3,
-                maxUrls: maxURLs && maxURLs.value ? maxURLs.value : 10,
+                maxDepth: maxDepth && maxDepth.value ? maxDepth.value : 10,
+                maxUrls: maxURLs && maxURLs.value ? maxURLs.value : 1000,
                 maxWait: 5000,
                 recursive: true,
                 userAgent: userAgent && userAgent.value ? userAgent.value : 'WEBWARDv1.0',
                 htmlMaxCols: 2000,
                 htmlMaxRows: 2000,
-            });
+            }
+            //Basic Auth
+            var username = node.getParam('_USERNAME');
+            var password = node.getParam('_PASSWORD');
+            if(username && username.value !== "" && password && password.value){
+                scanOpts.username = username.value;
+                scanOpts.password = password.value;
+            }
+            var scan = wappalyzer(myURL.value, scanOpts);
             var asdas = node.registerService('WAPPALYZER', scan);
             console.log("Registrado servicio?" + asdas)
             node.removeProperty('RETRIES')

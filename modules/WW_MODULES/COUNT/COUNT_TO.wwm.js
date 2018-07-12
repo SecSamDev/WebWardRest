@@ -1,9 +1,8 @@
 var contador = node.getParam('_COUNT');
 var max_contador = node.getParam('_COUNT_TO');
-
 if(contador !== null && max_contador !== null){
     contador.value++;
-    if(contador.value === max_contador.value){
+    if(contador.value === max_contador.value || parseInt(contador.value) == parseInt(max_contador.value)){
         node.addProperty(contador);
         var inputParms = node.getInParams();
         node.addOutParameters(inputParams);
