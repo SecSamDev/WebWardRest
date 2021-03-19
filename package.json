@@ -13,7 +13,7 @@
 		"debug": "~2.6.9",
 		"dockernode": "^0.1.0",
 		"dockerode": "^2.5.5",
-		"dompurify": "^1.0.5",
+		"dompurify": "^2.0.17",
 		"express": "^4.16.3",
 		"express-promise-router": "^3.0.2",
 		"helmet": "^3.12.1",
